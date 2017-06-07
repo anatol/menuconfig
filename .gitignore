@@ -1,13 +1,15 @@
-#
-# Generated files
-#
-*.moc
-
-#
-# configuration programs
-#
+.ninja_deps
+.ninja_log
 conf
+conf.o
+lxdialog/checklist.o
+lxdialog/inputbox.o
+lxdialog/menubox.o
+lxdialog/textbox.o
+lxdialog/util.o
+lxdialog/yesno.o
 mconf
-nconf
-qconf
-gconf
+mconf.o
+zconf.lex.c
+zconf.tab.c
+zconf.tab.o
