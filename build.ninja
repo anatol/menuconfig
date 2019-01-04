@@ -11,16 +11,20 @@ rule flex
   command = flex -o $out $in
 
 rule bison
-  command = bison -o $out $in
+  command = bison -d -o $out $in
 
 build zconf.lex.c: flex zconf.l
-build zconf.tab.c: bison zconf.y
+build zconf.tab.c | zconf.tab.h: bison zconf.y
 
 build conf.o: cc conf.c
+build confdata.o: cc confdata.c
+build expr.o: cc expr.c
 build mconf.o: cc mconf.c
-build zconf.tab.o: cc zconf.tab.c | zconf.lex.c
+build preprocess.o: cc preprocess.c
+build symbol.o: cc symbol.c
+build zconf.tab.o: cc zconf.tab.c
   cflags = -DYYDEBUG
-
+build zconf.lex.o: cc zconf.lex.c | zconf.tab.h
 build lxdialog/util.o: cc lxdialog/util.c
 build lxdialog/yesno.o: cc lxdialog/yesno.c
 build lxdialog/inputbox.o: cc lxdialog/inputbox.c
@@ -28,6 +32,6 @@ build lxdialog/checklist.o: cc lxdialog/checklist.c
 build lxdialog/textbox.o: cc lxdialog/textbox.c
 build lxdialog/menubox.o: cc lxdialog/menubox.c
 
-build conf: ld conf.o zconf.tab.o
-build mconf: ld mconf.o zconf.tab.o lxdialog/util.o lxdialog/yesno.o lxdialog/inputbox.o lxdialog/checklist.o lxdialog/textbox.o lxdialog/menubox.o
+build conf: ld conf.o symbol.o expr.o preprocess.o confdata.o zconf.tab.o zconf.lex.o
+build mconf: ld mconf.o symbol.o expr.o preprocess.o confdata.o zconf.tab.o zconf.lex.o lxdialog/util.o lxdialog/yesno.o lxdialog/inputbox.o lxdialog/checklist.o lxdialog/textbox.o lxdialog/menubox.o
   ldflags = -lncurses

@@ -2,6 +2,8 @@
 .ninja_log
 conf
 conf.o
+confdata.o
+expr.o
 lxdialog/checklist.o
 lxdialog/inputbox.o
 lxdialog/menubox.o
@@ -10,6 +12,10 @@ lxdialog/util.o
 lxdialog/yesno.o
 mconf
 mconf.o
+preprocess.o
+symbol.o
 zconf.lex.c
+zconf.lex.o
 zconf.tab.c
+zconf.tab.h
 zconf.tab.o
