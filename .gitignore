@@ -5,3 +5,8 @@
 /[gmnq]conf-cflags
 /[gmnq]conf-libs
 /qconf-moc.cc
+*.o
+.ninja_log
+lexer.tab.c
+parser.tab.c
+parser.tab.h

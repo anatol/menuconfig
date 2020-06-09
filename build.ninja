@@ -1,0 +1,40 @@
+common_cflags =
+common_ldflags =
+
+rule cc
+  command = gcc $common_cflags $cflags -c $in -o $out
+
+rule ld
+  command = gcc $common_cflags $cflags $common_ldflags $ldflags $in -o $out
+
+rule flex
+  command = flex -o $out $in
+
+rule bison
+  command = bison -d -o $out $in
+
+build lexer.tab.c: flex lexer.l
+build parser.tab.c | parser.tab.h: bison parser.y
+
+build conf.o: cc conf.c
+build confdata.o: cc confdata.c
+build expr.o: cc expr.c
+build mconf.o: cc mconf.c
+build mnconf-common.o: cc mnconf-common.c
+build menu.o: cc menu.c
+build preprocess.o: cc preprocess.c
+build symbol.o: cc symbol.c
+build util.o: cc util.c
+build parser.tab.o: cc parser.tab.c
+  cflags = -DYYDEBUG
+build lexer.tab.o: cc lexer.tab.c | parser.tab.h
+build lxdialog/util.o: cc lxdialog/util.c
+build lxdialog/yesno.o: cc lxdialog/yesno.c
+build lxdialog/inputbox.o: cc lxdialog/inputbox.c
+build lxdialog/checklist.o: cc lxdialog/checklist.c
+build lxdialog/textbox.o: cc lxdialog/textbox.c
+build lxdialog/menubox.o: cc lxdialog/menubox.c
+
+build conf: ld conf.o symbol.o expr.o preprocess.o confdata.o parser.tab.o lexer.tab.o util.o menu.o
+build mconf: ld mconf.o mnconf-common.o symbol.o expr.o preprocess.o confdata.o parser.tab.o lexer.tab.o lxdialog/util.o lxdialog/yesno.o lxdialog/inputbox.o lxdialog/checklist.o lxdialog/textbox.o lxdialog/menubox.o util.o menu.o
+  ldflags = -lncurses
